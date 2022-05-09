@@ -1,36 +1,64 @@
+import { sample, shuffle, random } from "lodash"
+
 import ItemCollection from "./itemCollection"
-import { LevelConfig, Board } from "."
+import { LevelConfig, Grid, Coord, createGrid } from "."
 import Item from "./item"
+import ItemCollections from "./itemCollections"
 
 export default class Solution {
-  private _collections: {[collectionName: string]: ItemCollection} = {}
+  private _collections: ItemCollections 
   private _config: LevelConfig | undefined
-  private _allItems: {[key:string]: Item} = {}
 
-  constructor(config: LevelConfig, collections: {[collectionName: string]: ItemCollection}) {
+  private _grid: Grid<string[]> = [] // stores the items key = collection.item
+  private _asCoordMap: {[itemKey: string]: Coord} = {}
+
+
+  constructor(config: LevelConfig, collections: ItemCollections) {
     this._config = config
     this._collections = collections
 
-    // generate a unique list of items
-    for(const collectionName in this._collections) {
-      const collection = this._collections[collectionName]
-      for(const item of collection.asArray()) {
-        const key = collectionName + '.' + item.name
-        this._allItems[key] = item
-      }
-    }
-
     /* Solution creation */
     // we need to ensure each row and column has at least one item
-    const {width, height} = config.boundaries
+    const {cols, rows} = config.boundaries
+    const maxBoundary = Math.max(cols, rows)
+    this._grid = createGrid(cols, rows)
+    console.log(this._grid[0] === this._grid[1])
+    
+    
     // so, a) we need enough items
-    if(Object.keys(this._allItems).length < Math.max(width, height)) {
+    if(Object.keys(collections.allItems).length < maxBoundary) {
       throw new Error("Not enough items for this level:" + this._config.number);
-
     }
 
-    const cols:boolean[] = Array(config.boundaries.width).map( () => false)
-    const rows:boolean[] = Array(config.boundaries.height).map( () => false)
+    // b) pick a coordinate for each element, ensuring we cover all cols and rows first
+    function createAvailable(max:number):number[] {
+      return shuffle(Array(cols).fill(0).map((v,i)=>i))
+    }
+    const availableCols = createAvailable(cols)
+    const availableRows = createAvailable(rows)
+
+    function getAxis(available: number[], axis: 'cols' | 'rows'): number {
+      if (available.length > 0) return available.shift()!
+      return axis === 'cols' ? random(cols-1) : random(rows-1)
+    }
+    for(const itemKey in collections.allItems) {
+      const col = getAxis(availableCols, 'cols')
+      const row = getAxis(availableRows, 'rows')
+      this._asCoordMap[itemKey] = {col, row}
+      console.log(col, row)
+      this._grid[row][col] === null ? this._grid[row][col] = [itemKey] : this._grid[row][col]?.push(itemKey)
+    }
+    console.log(this._asCoordMap)
+    console.log(this._grid)
+    // create a reverse board
+    //console.log(this._grid)
   }
 
+  get grid() {
+    return this._grid
+  }
+
+  check(tentative: Grid<string[]>) {
+    return tentative == this._grid
+  }
 }

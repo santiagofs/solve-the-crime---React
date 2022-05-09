@@ -7,6 +7,7 @@ import level02 from "../config/levels/level-02"
 
 import Item from "./item"
 import ItemCollection from "./itemCollection"
+import ItemCollections from "./itemCollections"
 import Level from "./level"
 
 const gameConfig: {collections: {[key: string]: CollectionConfig}, levels: LevelConfig[]} = {
@@ -36,11 +37,12 @@ export default class Game {
 
   createLevel(levelId: number): Level {
     const config = this._levels[levelId]
-    const levelCollections: {[collectionName: string]: ItemCollection} = {}
+    const levelCollections =  new ItemCollections()
 
     for(const collectionName of config.collections) {
-      levelCollections[collectionName] = this._collections[collectionName].pick(config.itemsPerCollection)
+      levelCollections.add(this._collections[collectionName].pick(config.itemsPerCollection))
     }
+
     return new Level(config, levelCollections)
   }
 

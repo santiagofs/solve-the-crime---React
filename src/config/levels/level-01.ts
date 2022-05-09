@@ -4,5 +4,5 @@ export default {
   number: 1,
   collections: ['heroes', 'villains'],
   itemsPerCollection: 3,
-  boundaries: { width: 2, height: 2 },
+  boundaries: { cols: 2, rows: 2 },
 } as LevelConfig;
