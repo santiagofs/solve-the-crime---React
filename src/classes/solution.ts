@@ -6,7 +6,7 @@ import Item from "./item"
 import ItemCollections from "./itemCollections"
 
 export default class Solution {
-  private _collections: ItemCollections 
+  private _collections: ItemCollections
   private _config: LevelConfig | undefined
 
   private _grid: Grid<string[]> = [] // stores the items key = collection.item
@@ -22,9 +22,7 @@ export default class Solution {
     const {cols, rows} = config.boundaries
     const maxBoundary = Math.max(cols, rows)
     this._grid = createGrid(cols, rows)
-    console.log(this._grid[0] === this._grid[1])
-    
-    
+
     // so, a) we need enough items
     if(Object.keys(collections.allItems).length < maxBoundary) {
       throw new Error("Not enough items for this level:" + this._config.number);
@@ -48,10 +46,6 @@ export default class Solution {
       console.log(col, row)
       this._grid[row][col] === null ? this._grid[row][col] = [itemKey] : this._grid[row][col]?.push(itemKey)
     }
-    console.log(this._asCoordMap)
-    console.log(this._grid)
-    // create a reverse board
-    //console.log(this._grid)
   }
 
   get grid() {

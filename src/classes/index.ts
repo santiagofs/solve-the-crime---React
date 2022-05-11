@@ -39,4 +39,4 @@ export {default as Rule, } from './rule'
 export type {RuleItem} from './rule'
 
 export type Distance = number | "?";
-export type Axis = "rows" | "cols";
+export type Axis = "row" | "col";
