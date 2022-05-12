@@ -13,6 +13,7 @@ export default class Level {
     this.solution = new Solution(config, collections)
 
     // create a grid that holds every possible item on each cell
+    // this will be used to show the items in the Board component
     const {rows, cols} = config.boundaries
     for(let row = 0; row < rows; row++) {
       this.grid[row] = []
@@ -20,6 +21,17 @@ export default class Level {
         this.grid[row][col] = collections.allKeys
       }
     }
+
+    // we need to create the rules needed to achieve the solution
+    /*
+      - create a temporary copy o the grid
+      - pick a pair of items, at least one unsolved
+      - create a rule
+      - apply the rule to the temp grid and check if the rule changes the grid state. if not, create another rule (failsafe here)
+      - apply all rules to the grid until no changes are detected
+      - check if the result is equal to the solution. if not, repeat the process creating a new rule
+    */
+
   }
 
   removeFromGrid(row:number, col:number, item:string) {

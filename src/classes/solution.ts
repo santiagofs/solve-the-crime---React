@@ -43,7 +43,6 @@ export default class Solution {
       const col = getAxis(availableCols, 'cols')
       const row = getAxis(availableRows, 'rows')
       this._asCoordMap[itemKey] = {col, row}
-      console.log(col, row)
       this._grid[row][col] === null ? this._grid[row][col] = [itemKey] : this._grid[row][col]?.push(itemKey)
     }
   }
