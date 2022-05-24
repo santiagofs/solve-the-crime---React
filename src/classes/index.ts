@@ -2,8 +2,9 @@ export type ItemConfig = [string, string] // name, icon
 export type CollectionConfig = ItemConfig[]
 
 export type Grid<T> = (T|null)[][]
-
-
+export type StringGrid = Grid<string[]>
+export type Room = {row:number, col:number, items: string[]}
+export type GridIteratorCallback  = (room:Room) => void
 
 export const createGrid = (cols: number, rows: number) => {
   //return Array(rows).fill(Array(cols).fill(null))

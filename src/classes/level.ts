@@ -1,8 +1,8 @@
 import { sample, without } from "lodash"
-import { LevelConfig, Grid, Coord, Item, Rule } from "."
+import { LevelConfig, Grid, StringGrid, Coord, Room, GridIteratorCallback, Rule, Axis } from "."
 import Solution from "./solution"
 import ItemCollections from "./itemCollections"
-import { ObjectFlags } from "typescript"
+
 
 export default class Level {
   private _config: LevelConfig | undefined
@@ -78,7 +78,7 @@ export default class Level {
       } while(safeRule < 200 && changed === false)
 
       if(!changed) throw new Error("Unable to find a create a significat rule");
-      
+      console.log('safe    >>>> ', safe)
       
 
       
@@ -92,6 +92,54 @@ export default class Level {
     const b = sample(without(this._allItemKeys, a))
     if(!b) throw new Error("Could not found a second item")
     return [a, b]
+  }
+  iterate(grid:Grid<string[]>, callback:GridIteratorCallback) {
+    for(let y = 0; y < grid.length; y++) {
+      const row = grid[y]
+      for(let x = 0; x < grid[y].length; x++) {
+        callback({row: y, col: x, items: grid[y][x]!} )
+      }
+    }
+  }
+  findMinMax(a:string, b:string, grid:Grid<string[]>) {
+    const rows = grid.length
+    const cols = grid[0]!.length
+    
+    const ret = {
+      /** rows hold, for each row, the minMax value expressed as a column number */
+      [a]: {cols: Array(cols).fill(Number.MAX_SAFE_INTEGER), rows: Array(rows).fill(Number.MAX_SAFE_INTEGER)},
+      [b]: {cols: Array(cols).fill(0), rows: Array(rows).fill(0)}
+    }
+    this.iterate(grid, (room) => {
+      if(room.items.includes(a)) {
+        ret[a].rows[room.row] = Math.min(ret[a].rows[room.row], room.col)
+        ret[a].cols[room.col] = Math.min(ret[a].cols[room.col], room.row)
+      }
+      if(room.items.includes(b)) {
+        ret[b].rows[room.row] = Math.max(ret[b].rows[room.row], room.col)
+        ret[b].cols[room.col] = Math.max(ret[b].cols[room.col], room.row)
+      }
+    })
+    return ret
+  }
+  getRoom(grid:StringGrid, coord:Coord):Room {
+    return {
+      row:coord.row,
+      col: coord.col,
+      items: grid[coord.row][coord.col]!
+    }
+  }
+  buildCoord(fCoord: {[ key:string]: number}):Coord {
+    const coord = {row: -1, col: -1}
+    if(fCoord.col) coord.col = fCoord.col
+    if(fCoord.row) coord.row = fCoord.row
+    return coord
+  }
+  removeFromRoom(item:string, room:Room) {
+    const ndx = room.items.indexOf(item)
+    if(ndx === -1) return false
+    room.items.splice(ndx,1)
+    return true
   }
 
   applyRule(rule:Rule, grid:Grid<string[]>):boolean {
@@ -108,6 +156,26 @@ export default class Level {
     // if the rule distance is defined,
     // - both A and A+distance should exist
     // - both B and B-distance should exist
+
+    const otherAxis:Axis = rule.axis === 'col' ? 'row' : 'col'
+    for(let y = 0; y < grid.length; y++) {
+      const col = grid[y]
+      for(let x = 0; x < col.length; x++) {
+        if(rule.distance === '?') {
+          const minMax = this.findMinMax(rule.a, rule.b, grid)
+          this.iterate(grid, (room) => {
+            const checkIndex = room[rule.axis]
+            const fixedIndex = room[otherAxis]
+            const bCoord = this.buildCoord({[rule.axis]: checkIndex, [otherAxis]: fixedIndex})
+            const bRoom = this.getRoom(grid, bCoord)
+            if()
+          })
+        } else {
+
+        }
+        console.log(y, x, rule.axis, this._config)
+      }
+    }
 
     // if the rule is significant, continue applying it until no changes are detected
     if(changed) this.applyRule(rule, grid)
