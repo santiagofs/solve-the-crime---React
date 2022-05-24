@@ -51,6 +51,10 @@ export default class Solution {
     return this._grid
   }
 
+  get map() {
+    return this._asCoordMap
+  }
+
   check(tentative: Grid<string[]>) {
     return tentative == this._grid
   }
