@@ -1,4 +1,4 @@
-import { cloneDeep, sample, without } from "lodash"
+import { sample, without } from "lodash"
 import { LevelConfig, Grid, StringGrid, Coord, Room, GridIteratorCallback, Rule, Axis } from "."
 import Solution from "./solution"
 import ItemCollections from "./itemCollections"
@@ -55,7 +55,6 @@ export default class Level {
         // }
       }
     }
-    console.log(this._itemCoords(this.grid))
 
     // we need to create the rules needed to achieve the solution
     /*
@@ -68,7 +67,7 @@ export default class Level {
         - check if the result is equal to the solution. if not, repeat the process creating a new rule
     */
     /** create a temporary copy o the grid */
-    const tmpGrid: Grid<string[]> = cloneDeep(this.grid)
+    const tmpGrid: Grid<string[]> = structuredClone(this.grid)
     let safe:number = 0
 
     do {
@@ -89,7 +88,6 @@ export default class Level {
         if(!bCoords) throw new Error("Couldn't find room for item b: " + b);
 
         const rule = new Rule({key:a, ...aCoords}, {key: b, ...bCoords})
-        console.log(rule)
         /** apply the rule to the temp grid and check if the rule changes the grid state. if not, create another rule */
         changed = this.applyRule(rule, tmpGrid)
         if(changed) this.rules.push(rule)
@@ -101,7 +99,6 @@ export default class Level {
 
     } while(this._unsolved(tmpGrid).length > 0 && safe < 200)
 
-    console.log('tha grid', this.grid)
   }
 
   pickPair(grid:StringGrid) {
@@ -119,13 +116,14 @@ export default class Level {
     }
   }
   findMinMax(a:string, b:string, grid:Grid<string[]>) {
+
     const rows = grid.length
     const cols = grid[0]!.length
 
     const ret = {
       /** rows hold, for each row, the minMax value expressed as a column number */
-      a: {cols: Array(cols).fill(Number.MAX_SAFE_INTEGER), rows: Array(rows).fill(Number.MAX_SAFE_INTEGER)},
-      b: {cols: Array(cols).fill(0), rows: Array(rows).fill(0)}
+      a: {cols: Array(cols).fill(Number.MAX_SAFE_INTEGER), rows: Array(rows).fill(Number.MAX_SAFE_INTEGER), col: Number.MAX_SAFE_INTEGER, row: Number.MAX_SAFE_INTEGER},
+      b: {cols: Array(cols).fill(0), rows: Array(rows).fill(0), col: 0, row: 0}
     }
     this.iterate(grid, (room) => {
       if(room.items.includes(a)) {
@@ -137,6 +135,10 @@ export default class Level {
         ret.b.cols[room.col] = Math.max(ret.b.cols[room.col], room.row)
       }
     })
+    ret.a.col = Math.min(...ret.a.cols)
+    ret.a.row = Math.min(...ret.a.rows)
+    ret.b.col = Math.max(...ret.b.cols)
+    ret.b.row = Math.max(...ret.b.rows)
     return ret
   }
   getRoom(grid:StringGrid, coord:Coord):Room|null {
@@ -149,8 +151,8 @@ export default class Level {
   }
   buildCoord(fCoord: {[ key:string]: number}):Coord {
     const coord = {row: -1, col: -1}
-    if(fCoord.col) coord.col = fCoord.col
-    if(fCoord.row) coord.row = fCoord.row
+    if(fCoord.col !== null) coord.col = fCoord.col
+    if(fCoord.row !== null) coord.row = fCoord.row
     return coord
   }
   removeFromRoom(item:string, room:Room) {
@@ -164,11 +166,8 @@ export default class Level {
     // we need a grid copy to check if the rule changed something or not
     let changed = false
 
-
-
     // if the rule distance is not defined (distance === ?), we just trim the edges
-    // - for each [col, row] in the rule axis
-    // - we find the min A and the max B
+    // - we find the min A and the max B. Must check the sameOtherAxis to use the global min or the otherAxis specific one
     // - we remove all the B <= than A and all the A >= B
 
     // if the rule distance is defined,
@@ -180,6 +179,7 @@ export default class Level {
 
       if(rule.distance === '?') {
         const minMax = this.findMinMax(rule.a, rule.b, grid)
+        console.log('the minmax > ', minMax)
         this.iterate(grid, (room) => {
           // check if this room should have "b",
           // this room index on rule axis should be grater than the min "a" for the same transversal axis
@@ -187,9 +187,11 @@ export default class Level {
           // b should be present only if minmax.rows[room.row] is less than room.col
           const checkIndex = room[rule.axis]
           const fixedIndex = room[otherAxis]
-          const min = minMax.a[minMaxRefAxis][fixedIndex]
-          const max = minMax.b[minMaxRefAxis][fixedIndex]
-
+          //const min = rule.sameOtherAxis ? minMax.a[rule.axis] : minMax.a[minMaxRefAxis][fixedIndex]
+          //const max = rule.sameOtherAxis ? minMax.b[rule.axis] : minMax.b[minMaxRefAxis][fixedIndex]
+          const min = minMax.a[rule.axis]
+          const max = minMax.b[rule.axis]
+          console.log('rule >', rule.a, rule.b, min, max)
           if(checkIndex >= max) {
             this.removeFromRoom(rule.a, room) && (changed = true) // nice, but TODO: check it
           }
@@ -200,20 +202,31 @@ export default class Level {
       } else {
         this.iterate(grid, room => {
           const distance = rule.distance as number
+          console.log('fixed', room, distance)
+          const coordB = this.buildCoord({[otherAxis]: room[otherAxis], [rule.axis]: room[rule.axis] + distance})
+          const roomB = this.getRoom(grid, coordB)
+
+          const coordA = this.buildCoord({[otherAxis]: room[otherAxis], [rule.axis]: room[rule.axis] - distance})
+          const roomA = this.getRoom(grid, coordA)
+
           if(!room.items.includes(rule.a)) {
-            const coordB = this.buildCoord({[otherAxis]: room[otherAxis], [rule.axis]: room[rule.axis] + distance})
-            const roomB = this.getRoom(grid, coordB)
-            if(roomB) this.removeFromRoom(rule.b, roomB) && (changed = true) // nice, but TODO: check it
+            console.log('a1', roomB, coordB)
+            if(roomB) this.removeFromRoom(rule.b, roomB) && (changed = true)
+          } else {
+            console.log('a2', roomB, coordB)
+            if(!roomB) this.removeFromRoom(rule.a, room) && (changed = true)
           }
+
           if(!room.items.includes(rule.b)) {
-            const coordA = this.buildCoord({[otherAxis]: room[otherAxis], [rule.axis]: room[rule.axis] - distance})
-            const roomA = this.getRoom(grid, coordA)
-            if(roomA) this.removeFromRoom(rule.b, roomA) && (changed = true) // nice, but TODO: check it
+            console.log('b1', roomA, coordA)
+            if(roomA) this.removeFromRoom(rule.a, roomA) && (changed = true)
+          } else {
+            console.log('b2', roomA, coordA)
+            if(!roomA) this.removeFromRoom(rule.b, room) && (changed = true)
           }
         })
       }
 
-    console.log('changed >>>', changed)
     // if the rule is significant, continue applying it until no changes are detected
     if(changed) this.applyRule(rule, grid)
 

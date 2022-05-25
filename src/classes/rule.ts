@@ -9,24 +9,29 @@ export type RuleItem = {
 
 export default class Rule {
   readonly axis: Axis = 'col'
+  readonly sameOtherAxis: boolean
   readonly distance: Distance
   readonly a:string
   readonly b:string
 
   constructor( a:RuleItem, b:RuleItem) {
-    this.axis =
-      a.col === b.col // in the same column?
-          ? "row" // measure the distant in rows
-          : (a.row === b.row // in the same row?
-              ? "col" // measure the distant in columns
-              : sample(["row", "col"]) as Axis); // choose any
+    if (a.col === b.col) {
+      this.axis = 'row'
+      this.sameOtherAxis = true
+    } else if (a.row === b.row) {
+      this.axis = 'col'
+      this.sameOtherAxis = true
+    } else {
+      this.axis = sample(["row", "col"]) as Axis
+      this.sameOtherAxis = false
+    }
 
     const distance = b[this.axis] - a[this.axis];
 
     [this.a, this.b] = distance >= 0 ? [a.key, b.key] : [b.key, a.key];
 
     const distanceOptions: Distance[] = [Math.abs(distance)];
-    if (distance !== 0) distanceOptions.push("?");
+    // if (distance !== 0) distanceOptions.push("?");
     this.distance = sample(distanceOptions) as Distance;
   }
 }

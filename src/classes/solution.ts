@@ -1,8 +1,5 @@
-import { sample, shuffle, random } from "lodash"
-
-import ItemCollection from "./itemCollection"
+import { shuffle, random, isEqual } from "lodash"
 import { LevelConfig, Grid, Coord, createGrid } from "."
-import Item from "./item"
 import ItemCollections from "./itemCollections"
 
 export default class Solution {
@@ -56,6 +53,6 @@ export default class Solution {
   }
 
   check(tentative: Grid<string[]>) {
-    return tentative == this._grid
+    return isEqual(tentative, this._grid)
   }
 }

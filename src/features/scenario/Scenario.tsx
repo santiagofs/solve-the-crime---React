@@ -35,6 +35,7 @@ export function Scenario({levelId, game, backHandler}: {levelId: number, game:Ga
   }
   function applyRule(rule:Rule) {
     if(level === null) return
+    console.log(level.findMinMax(rule.a, rule.b, level.grid))
     level.applyRule(rule, level.grid)
     setGrid([...level.grid])
   }
