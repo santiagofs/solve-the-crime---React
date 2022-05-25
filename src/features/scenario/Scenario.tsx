@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Game, Level, Grid } from '../../classes';
+import { Game, Level, Grid, Rule } from '../../classes';
 import { Board } from '../board/Board';
 import Rules from '../rules/Rules';
 
@@ -28,15 +28,26 @@ export function Scenario({levelId, game, backHandler}: {levelId: number, game:Ga
     setGrid([...grid!])
   }
 
+  function solveHandler() {
+    if(level === null) return
+    level.solve()
+    setGrid([...level.grid])
+  }
+  function applyRule(rule:Rule) {
+    if(level === null) return
+    level.applyRule(rule, level.grid)
+    setGrid([...level.grid])
+  }
+
 
   return (
     <div>
-      <h1>The Scenario <button onClick={() => backHandler()}>Back</button></h1>
+      <h1>The Scenario <button onClick={() => backHandler()}>Back</button> <button onClick={() => solveHandler()}>Solve</button> </h1>
       <div className='flex gap-10'>
       {(level !== null) && <Board grid={level!.solution.grid} collections={level!.collections}></Board> }
       {(level !== null) && <Board grid={grid!} collections={level!.collections} clickHandler={removeFromGrid}></Board> }
 
-      {(level !== null) && <Rules /> }
+      {(level !== null) && <Rules rules={level.rules} clickHandler={applyRule} /> }
       </div>
       {/* {JSON.stringify(game)} */}
     </div>
