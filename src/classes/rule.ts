@@ -1,37 +1,38 @@
-import { sample } from "lodash";
-import { Axis, Distance } from ".";
-
+// import { sample } from "lodash";
+import type { Distance } from ".";
 export type RuleItem = {
   col: number;
   row: number;
   key: string
 }
 
+export type RuleDistance = {
+  cols: Distance,
+  rows: Distance
+}
+
 export default class Rule {
-  readonly axis: Axis = 'col'
-  readonly sameOtherAxis: boolean
-  readonly distance: Distance
+  readonly distance: RuleDistance
   readonly a:string
   readonly b:string
 
   constructor( a:RuleItem, b:RuleItem) {
-    if (a.col === b.col) {
-      this.axis = 'row'
-      this.sameOtherAxis = true
-    } else if (a.row === b.row) {
-      this.axis = 'col'
-      this.sameOtherAxis = true
-    } else {
-      this.axis = sample(["row", "col"]) as Axis
-      this.sameOtherAxis = false
+    const [A, B] = a.col < b.col ? [a, b] : (a.col > b.col ? [b, a] : (a.row < b.row ? [a, b]: [b, a]))
+    this.distance = {
+      cols: B.col - A.col,
+      rows: B.row - A.row
     }
+    /** TODO: add option for "?" */
+    this.a = A.key
+    this.b = B.key
 
-    const distance = b[this.axis] - a[this.axis];
 
-    [this.a, this.b] = distance >= 0 ? [a.key, b.key] : [b.key, a.key];
+    // const distance = b[this.axis] - a[this.axis];
 
-    const distanceOptions: Distance[] = [Math.abs(distance)];
-    // if (distance !== 0) distanceOptions.push("?");
-    this.distance = sample(distanceOptions) as Distance;
+    // [this.a, this.b] = distance >= 0 ? [a.key, b.key] : [b.key, a.key];
+
+    // const distanceOptions: Distance[] = [Math.abs(distance)];
+    // // if (distance !== 0) distanceOptions.push("?");
+    // this.distance = sample(distanceOptions) as Distance;
   }
 }

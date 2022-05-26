@@ -16,7 +16,6 @@ export const createGrid = (cols: number, rows: number) => {
       ret[row][col] = null
     }
   }
-  console.log(ret)
   return ret
 }
 
