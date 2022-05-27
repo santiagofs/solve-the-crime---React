@@ -172,9 +172,12 @@ export default class Level {
     let changed = false
     console.log('<<< Applying rule')
     this.iterate(grid, (room) => {
-      if(rule.distance.cols === '?' || rule.distance.rows === '?') {
+      if(rule.distanceMaks) {
         // should trim
-        console.log('shouldnt be here')
+        const minMax = this.findMinMax(rule.a, rule.b, grid)
+        const colOffset = rule.distance.col === 0 ? 0 : 1
+        if(room.col < minMax.a.col || room.row < minMax.a.row) this.removeFromRoom(rule.b, room) && (changed = true)
+        if(room.col < minMax.b.col || room.row < minMax.b.row) this.removeFromRoom(rule.a, room) && (changed = true)
       } else {
         const [cols, rows] = [rule.distance.cols, rule.distance.rows]
         const aRoom = this.getRoom(grid, {col: room.col - cols, row: room.row - rows})

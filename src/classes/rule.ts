@@ -1,18 +1,17 @@
-// import { sample } from "lodash";
-import type { Distance } from ".";
 export type RuleItem = {
   col: number;
   row: number;
   key: string
 }
 
-export type RuleDistance = {
-  cols: Distance,
-  rows: Distance
+export type Vector = {
+  cols: number,
+  rows: number
 }
 
 export default class Rule {
-  readonly distance: RuleDistance
+  readonly distance: Vector
+  readonly distanceMaks: boolean
   readonly a:string
   readonly b:string
 
@@ -26,13 +25,8 @@ export default class Rule {
     this.a = A.key
     this.b = B.key
 
+    const maskChance = Math.random() * 4; // probably should add a parameter with the expected dificulty
+    this.distanceMaks = maskChance !== 0
 
-    // const distance = b[this.axis] - a[this.axis];
-
-    // [this.a, this.b] = distance >= 0 ? [a.key, b.key] : [b.key, a.key];
-
-    // const distanceOptions: Distance[] = [Math.abs(distance)];
-    // // if (distance !== 0) distanceOptions.push("?");
-    // this.distance = sample(distanceOptions) as Distance;
   }
 }
