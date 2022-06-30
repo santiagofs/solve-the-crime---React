@@ -19,10 +19,15 @@ export type Vector = {
   cols: number,
   rows: number
 }
+export type Direction = -1|0|1
 
 export type Rule = {
   distance: Vector
-  distanceMaks: boolean
+  distanceMask: boolean
   a:string
   b:string
+}
+
+export type Boundaries = {
+  left: number, top: number, right: number, bottom: number
 }

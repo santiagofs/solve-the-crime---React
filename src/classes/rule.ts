@@ -11,7 +11,7 @@ export type Vector = {
 
 export default class Rule {
   readonly distance: Vector
-  readonly distanceMaks: boolean
+  readonly distanceMask: boolean
   readonly a:string
   readonly b:string
 
@@ -26,7 +26,7 @@ export default class Rule {
     this.b = B.key
 
     const maskChance = Math.random() * 4; // probably should add a parameter with the expected dificulty
-    this.distanceMaks = maskChance !== 0
+    this.distanceMask = maskChance !== 0
 
   }
 }

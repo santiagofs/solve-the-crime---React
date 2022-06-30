@@ -16,7 +16,7 @@ export default class Solution {
 
     /* Solution creation */
     // we need to ensure each row and column has at least one item
-    const {cols, rows} = config.boundaries
+    const {cols, rows} = config.boardSize
     const maxBoundary = Math.max(cols, rows)
     this._grid = createGrid(cols, rows)
 

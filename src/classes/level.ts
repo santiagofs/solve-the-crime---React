@@ -45,7 +45,7 @@ export default class Level {
 
     // create a grid that holds every possible item on each cell
     // this will be used to show the items in the Board component
-    const {rows, cols} = config.boundaries
+    const {rows, cols} = config.boardSize
     for(let row = 0; row < rows; row++) {
       this.grid[row] = []
       for(let col=0; col < cols; col++) {
@@ -197,7 +197,7 @@ export default class Level {
     let changed = false
     console.log('<<< Applying rule')
     this.iterate(grid, (room) => {
-      if(rule.distanceMaks) {
+      if(rule.distanceMask) {
         // should trim
 
         if(rule.distance.cols === 0 && rule.distance.rows === 0) {

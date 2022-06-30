@@ -25,7 +25,7 @@ export type LevelConfig = {
   number: number;
   collections: string[];
   itemsPerCollection: number;
-  boundaries: { cols: number; rows: number };
+  boardSize: { cols: number; rows: number };
 };
 
 export {default as Game } from './game'
