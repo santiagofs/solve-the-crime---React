@@ -3,7 +3,7 @@ export type StringGrid = Grid<string[]>
 
 export type Solution = Grid<string>
 export type Room = {row:number, col:number, items: string[]}
-export type Board = StringGrid
+export type Board = string[][][]
 
 export type Coord = {col:number, row: number}
 export type CoordMap = {[itemName:string]: Coord}
