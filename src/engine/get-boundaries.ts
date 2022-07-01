@@ -1,9 +1,9 @@
-import getRowsCols from "./get-items-cols-rows";
+import getItemsColsRows from "./get-items-cols-rows";
 import { Board, Boundaries } from "./types";
 
 function getBoundaries(board:Board,  items: string[]):{[itemName: string]:Boundaries} {
   const ret:{[itemName: string]:Boundaries} = {}
-  const rowsCols = getRowsCols(board, items)
+  const rowsCols = getItemsColsRows(board, items)
 
   for(const itemName of items) {
     ret[itemName] = {

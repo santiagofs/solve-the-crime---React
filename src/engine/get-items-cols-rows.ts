@@ -1,7 +1,7 @@
 import iterateBoard from "./iterate-board";
 import { Board} from "./types";
 
-function getRowsCols(board:Board,  items: string[]):{[itemName: string]:{cols:number[], rows:number[]}} {
+function getItemsColsRows(board:Board,  items: string[]):{[itemName: string]:{cols:number[], rows:number[]}} {
   const ret:{[itemName: string]:{cols:number[], rows:number[]}} = {}
   for(const itemName of items) {
     ret[itemName]= {cols: [], rows: []}
@@ -17,4 +17,4 @@ function getRowsCols(board:Board,  items: string[]):{[itemName: string]:{cols:nu
   return ret
 }
 
-export default getRowsCols
+export default getItemsColsRows

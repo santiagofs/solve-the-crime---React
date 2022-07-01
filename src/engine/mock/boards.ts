@@ -6,22 +6,33 @@ export const boardFull2 = createBoard(3,3)
 
 
 export const board0:Board = [
-  [['thor', 'batman', 'flash', 'jason', 'hannibal', 'walter'], ['thor', 'batman', 'flash', 'jason', 'hannibal', 'walter']],
-  [['thor', 'batman', 'flash', 'jason', 'hannibal', 'walter'], ['thor', 'batman', 'flash', 'jason', 'hannibal', 'walter']]
+[['thor', 'walter'], ['thor', 'walter']],
+[['thor', 'walter'], ['thor', 'walter']]
 ]
 export const board1:Board = [
-  [['flash', 'jason', 'hannibal'], ['batman', 'flash', 'jason', 'hannibal']],
-  [['thor', 'flash', 'jason', 'hannibal', 'walter'], ['batman', 'thor', 'flash', 'jason', 'hannibal']]
+[[], []],
+[['thor', 'walter'], ['thor',]]
 ]
 export const board2:Board = [
-  [['thor', 'batman', 'flash', 'jason', 'hannibal'], ['batman', 'flash', 'jason', 'hannibal']],
-  [['batman', 'flash', 'jason', 'hannibal'], ['batman', 'flash', 'jason', 'hannibal', 'walter']]
+[['thor'], []],
+[[], ['walter']]
 ]
 export const board3:Board = [
-  [['thor', 'batman', 'flash', 'jason', 'hannibal'], ['thor', 'batman', 'flash', 'jason', 'hannibal']],
-  [['batman', 'flash', 'jason', 'hannibal', 'walter'], ['batman', 'flash', 'jason', 'hannibal', 'walter']]
+[['thor'], ['thor']],
+[['walter'], ['walter']]
 ]
 export const board4:Board = [
-  [['batman', 'flash', 'jason', 'hannibal', 'walter'], ['batman', 'flash', 'jason', 'hannibal', 'walter']],
-  [['thor', 'batman', 'flash', 'jason', 'hannibal'], ['thor', 'batman', 'flash', 'jason', 'hannibal']]
+[['walter'], ['walter']],
+[['thor'], ['thor']]
+]
+
+export const board5:Board = [
+  [[], ['walter', 'thor']],
+  [[], ['walter', 'thor']],
+]
+
+export const board_3x3_0 = [
+  [['thor', 'walter'], ['thor', 'walter'], ['thor', 'walter']],
+  [['thor', 'walter'], ['thor', 'walter'], ['thor', 'walter']],
+  [['thor', 'walter'], ['thor', 'walter'], ['thor', 'walter']]
 ]
