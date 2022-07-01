@@ -1,30 +1,16 @@
-import iterateBoard from "./iterate-board";
+import getRowsCols from "./get-items-cols-rows";
 import { Board, Boundaries } from "./types";
 
 function getBoundaries(board:Board,  items: string[]):{[itemName: string]:Boundaries} {
   const ret:{[itemName: string]:Boundaries} = {}
-
-  const cols:{[itemName:string]: number[]} = {}
-  const rows:{[itemName:string]: number[]} = {}
-  for(const itemName of items) {
-    cols[itemName] = []
-    rows[itemName] = []
-  }
-  iterateBoard(board, (room) => {
-    for(const itemName of items) {
-      if(room.items.includes(itemName)) {
-        cols[itemName].push(room.col)
-        rows[itemName].push(room.row)
-      }
-    }
-  })
+  const rowsCols = getRowsCols(board, items)
 
   for(const itemName of items) {
     ret[itemName] = {
-      top: Math.min(...rows[itemName]),
-      left: Math.min(...cols[itemName]),
-      right: Math.max(...cols[itemName]),
-      bottom: Math.max(...rows[itemName])
+      top: Math.min(...rowsCols[itemName].rows),
+      left: Math.min(...rowsCols[itemName].cols),
+      right: Math.max(...rowsCols[itemName].cols),
+      bottom: Math.max(...rowsCols[itemName].rows)
     }
   }
   return ret
