@@ -6,7 +6,7 @@ export type Room = {row:number, col:number, items: string[]}
 export type Board = string[][][]
 
 export type Coord = {col:number, row: number}
-export type CoordMap = {[itemName:string]: Coord}
+export type CoordMap = {[itemName:string]: Coord[]}
 
 
 export type RuleItem = {
@@ -30,4 +30,10 @@ export type Rule = {
 
 export type Boundaries = {
   left: number, top: number, right: number, bottom: number
+}
+
+export type Level = {
+  board:Board,
+  rules:Rule[],
+  solution:CoordMap
 }
