@@ -14,6 +14,7 @@
 // -- a solution
 
 import createBoard from "./create-board"
+import generateRules from "./generate-rules"
 import generateSolution from "./generate-solution"
 import { Level } from "./types"
 
@@ -23,7 +24,7 @@ const generateLevel = (cols:number, rows:number, items: string[]):Level => {
   const level = {
     board,
     solution,
-    rules: []
+    rules: generateRules(board, solution)
   }
 
   return level

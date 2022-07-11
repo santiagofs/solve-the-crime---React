@@ -100,4 +100,25 @@ describe('engine - apply rule', () => {
     // expect(board).toEqual(solution)
 
   })
+
+  it('failed test?', () => {
+
+    // let rules:Rule[]= [
+    //   {a: 'thor', b: 'walter', distance: {cols: 1, rows: 1}, distanceMask:true},
+    //   {a: 'thor', b: 'batman', distance: {cols: 2, rows: 0}, distanceMask:true},
+    //   {a: 'batman', b: 'walter', distance: {cols: 1, rows: 1}, distanceMask: true}
+    // ]
+
+    let board = [
+      [['thor', 'walter', 'batman'], ['thor', 'walter', 'batman'], ['thor', 'walter', 'batman']],
+      [['thor', 'walter', 'batman'], ['thor', 'walter', 'batman'], ['thor', 'walter', 'batman']]
+    ]
+    let rule:Rule = {a: 'thor', b: 'walter', distance: {cols: 1, rows: 1}, distanceMask:true}
+
+    let tmp =applyRule(board, rule)
+    expect(tmp).toEqual([
+      [['thor', 'batman'], ['thor', 'batman'], ['batman']],
+      [['batman'], ['walter', 'batman'], ['walter', 'batman']]
+    ])
+  })
 })

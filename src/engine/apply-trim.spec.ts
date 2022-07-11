@@ -32,4 +32,18 @@ describe('engine - apply trim', () => {
     ])
 
   })
+
+  it('tests with odd number of items', () => {
+    let board = [
+      [['thor', 'walter', 'batman'], ['thor', 'walter', 'batman'], ['thor', 'walter', 'batman']],
+      [['thor', 'walter', 'batman'], ['thor', 'walter', 'batman'], ['thor', 'walter', 'batman']]
+    ]
+    let rule:Rule = {a: 'thor', b: 'walter', distance: {cols: 1, rows: 1}, distanceMask:true}
+    let test = applyTrim(board, rule)
+    expect(test).toEqual([
+      [['thor', 'batman'], ['thor', 'batman'], ['batman']],
+      [['batman'], ['walter', 'batman'], ['walter', 'batman']]
+    ])
+
+  })
 })

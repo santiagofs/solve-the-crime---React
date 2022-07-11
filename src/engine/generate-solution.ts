@@ -13,7 +13,7 @@ const generateSolution = (cols:number, rows:number, items:string[]):CoordMap => 
 
   // b) pick a coordinate for each element, ensuring we cover all cols and rows first
   function createAvailable(max:number):number[] {
-    return shuffle(Array(cols).fill(0).map((v,i)=>i))
+    return shuffle(Array(max).fill(0).map((v,i)=>i))
   }
 
 
