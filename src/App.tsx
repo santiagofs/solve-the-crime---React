@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      {game && showGame ? <Main game={game} /> : <Splash  continueHandler={() => setShowGame(true)} isReady={isReady} />}
+      {game && showGame ? <Main game={game} backHandler={() => setShowGame(false)} /> : <Splash  continueHandler={() => setShowGame(true)} isReady={isReady} />}
     </div>
   );
 }

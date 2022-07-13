@@ -4,19 +4,22 @@ import { Game } from '../../classes';
 import { Map } from '../map/Map';
 import { Scenario } from '../scenario/Scenario';
 
-// import {FullScreenButton} from '../../components/full-screen-button'
+import { FullScreenButton } from '../../components/full-screen-button'
+import { ExitButton } from '../../components/exit-button'
 
 type ViewKey = 'map' | number
 
-export function Main({game}: {game: Game}) {
+export function Main({game, backHandler}: {game: Game, backHandler: React.MouseEventHandler}) {
   const [viewKey, setViewKey] = useState<ViewKey>('map')
+
 
   return (
     <div>
-      <header className='bg-amber-500 flex justify-between'>
+      <header className='bg-amber-500 flex justify-between py-2 px-4'>
         <h1 className='text-white text-2xl'>Hero Detective</h1>
         <div>
-          {/* <FullScreenButton /> */}
+          <FullScreenButton />
+          <ExitButton onClick={backHandler} />
         </div>
       </header>
 
