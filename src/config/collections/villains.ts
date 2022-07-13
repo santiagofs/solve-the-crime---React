@@ -3,12 +3,12 @@ import { CollectionConfig } from "../../classes";
 export const collection: CollectionConfig =  [
   ["psycho", "villains/psycho-2.svg"],
   ["alien", "villains/alien-1.svg"],
-  ["supervillain", "villains/supervillain.svg"],
+  ["supervillian", "villains/supervillian.svg"],
   ["prisioner", "villains/prisioner.svg"],
   ["jason", "villains/psycho-1.svg"],
-  ["walter", "villains/chemist.svg"],
-  ["hannibal", "villains/psycho.svg"],
-  ["guason", "villains/villian.svg"],
+  ["walter", "villains/walter.svg"],
+  ["hannibal", "villains/psycho-1.svg"],
+  ["guason", "villains/guason.svg"],
 ];
 
 export default collection
