@@ -2,7 +2,6 @@ import React, { useState, useEffect} from 'react';
 import { Splash } from './features/splash/Splash';
 import { Main } from './features/main/Main'
 
-import './App.css';
 import { Game } from './classes'
 
 

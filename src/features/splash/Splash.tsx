@@ -123,9 +123,9 @@ export function Splash({continueHandler, isReady}: splashProps) {
 
 
       </div>
-      <div className='m-auto z-10 '>
+      <div className='m-auto z-10 text-center'>
         <h1 className='text-white text-[120px] leading-none bg-opacity-90 bg-amber-500 px-40 py-10 rounded-lg shadow-md'>Hero Detective</h1>
-        {isReady && <button className="text-2xl mt-10 bg-orange-500 text-white font-bold rounded-lg px-10 py-2 shadow-md" onClick={() => continueHandler()}>START</button>}
+        {isReady && <button className="text-2xl mt-10 bg-orange-500 text-white font-bold rounded-lg px-10 py-2 shadow-md" onClick={() => continueHandler()}>start</button>}
       </div>
 
     </div>

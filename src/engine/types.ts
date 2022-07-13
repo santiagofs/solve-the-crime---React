@@ -33,7 +33,18 @@ export type Boundaries = {
 }
 
 export type Level = {
-  board:Board,
-  rules:Rule[],
+  board:Board
+  rules:Rule[]
   solution:CoordMap
+}
+
+export type Item = {
+  icon: string
+  name: string
+}
+
+export type ItemCollection = { [itemKey:string]: Item }
+export type ItemCollections = { [itemKey:string]: ItemCollection }
+export type Game = {
+  collections: ItemCollections
 }
