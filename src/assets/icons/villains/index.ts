@@ -8,7 +8,7 @@ import mib2 from './mib-2.svg'
 import mib3 from './mib-3.svg'
 import mib4 from './mib-4.svg'
 import mib5 from './mib-5.svg'
-import prisioner from './prisioner.svg'
+import prisoner from './prisoner.svg'
 import psycho1 from './psycho-1.svg'
 import psycho2 from './psycho-2.svg'
 import supervillian from './supervillian.svg'
@@ -25,7 +25,7 @@ export {
   mib3,
   mib4,
   mib5,
-  prisioner,
+  prisoner,
   psycho1,
   psycho2,
   supervillian,

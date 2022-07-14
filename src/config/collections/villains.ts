@@ -4,7 +4,7 @@ export const collection: CollectionConfig =  [
   ["psycho", "villains/psycho-2.svg"],
   ["alien", "villains/alien-1.svg"],
   ["supervillian", "villains/supervillian.svg"],
-  ["prisioner", "villains/prisioner.svg"],
+  ["prisoner", "villains/prisoner.svg"],
   ["jason", "villains/psycho-1.svg"],
   ["walter", "villains/walter.svg"],
   ["hannibal", "villains/psycho-1.svg"],
