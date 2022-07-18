@@ -1,6 +1,6 @@
 import * as heroIcons from '../assets/icons/heroes'
 import * as villainIcons from '../assets/icons/villains'
-import { ItemCollection } from '../engine/types'
+import { ItemCollection, ItemCollections } from '../engine/types'
 
 const heroesCollection:ItemCollection = {
   'heroes.batman': {name: 'batman', icon: heroIcons.batman},
@@ -15,7 +15,6 @@ const heroesCollection:ItemCollection = {
   'heroes.prRed': {name: 'red power ranger', icon: heroIcons.prRed},
   'heroes.prYellow': {name: 'yellow power ranger', icon: heroIcons.prYellow},
   'heroes.robocop': {name: 'batman', icon: heroIcons.robocop},
-  'heroes.superhero1': {name: 'superhero 1', icon: heroIcons.superhero1},
   'heroes.superhero6': {name: 'superhero 6', icon: heroIcons.superhero6},
   'heroes.superman': {name: 'superman', icon: heroIcons.superman},
   'heroes.thor': {name: 'batman', icon: heroIcons.thor},
@@ -40,8 +39,16 @@ const villainsCollection:ItemCollection = {
 }
 
 
-const gameConfig = {
+const gameConfig:{
+  collections:ItemCollections,
+  collectionKeys: {[collectionName:string]:string[]},
+  levels:string[]
+} = {
   collections: {heroes: heroesCollection, villains: villainsCollection},
+  collectionKeys: {
+    heroes: Object.keys(heroesCollection),
+    villains: Object.keys(villainsCollection),
+  },
   levels: [
     'level-01',
     'level-02',

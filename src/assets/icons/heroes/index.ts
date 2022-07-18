@@ -10,7 +10,6 @@ import prYellow from './pr-yellow.svg'
 import prRed from './pr-red.svg'
 import prPink from './pr-pink.svg'
 import robocop from './robocop.svg'
-import superhero1 from './superhero-1.svg'
 import superhero6 from './superhero-6.svg'
 import superman from './superman.svg'
 import thor from './thor.svg'
@@ -28,7 +27,6 @@ export {
   prRed,
   prPink,
   robocop,
-  superhero1,
   superhero6,
   superman,
   thor

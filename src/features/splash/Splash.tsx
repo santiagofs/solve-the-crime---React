@@ -1,17 +1,39 @@
-import { random } from 'lodash';
+import { random, sample } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import * as heroIcons from '../../assets/icons/heroes'
-import * as villainIcons from '../../assets/icons/villains'
+import gameConfig from '../../config';
 
 import SplashIcon from './SplashIcon'
 type splashProps = {
   continueHandler: () => void,
   isReady: boolean
 }
+type IconKey = {
+  collection:string, item:string
+}
+
+
+
+const heroIconKeys = Object.keys(gameConfig.collections.heroes)
+const villainIconKeys = Object.keys(gameConfig.collections.villains)
+const iconKeys:IconKey[] = []
+
+for(let i=0; i < 36; i++) {
+  iconKeys.push({
+    collection: 'heroes',
+    item: sample(heroIconKeys) as string
+  })
+  iconKeys.push({
+    collection: 'villains',
+    item: sample(villainIconKeys) as string
+  })
+}
+
+
 export function Splash({continueHandler, isReady}: splashProps) {
-  // 1-12, 13-24, 25-36, 37-48, 49-60, 61-72
   const [highlighted, setHighlighted] = useState([1, 23, 33, 38, 57, 66]) as [number[], Function]
+  const [icons, setIcons] = useState<IconKey[]>([])
+
 
   useEffect(() => {
     let timeout: number
@@ -28,97 +50,32 @@ export function Splash({continueHandler, isReady}: splashProps) {
     };
   }, [highlighted])
 
+  useEffect(() => {
+    const icons = []
+    for(let i=0; i < 36; i++) {
+      icons.push({
+        collection: 'heroes',
+        item: sample(heroIconKeys) as string
+      })
+      icons.push({
+        collection: 'villains',
+        item: sample(villainIconKeys) as string
+      })
+    }
+    setIcons(icons)
 
-  const icons = [
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.walter, alt: 'walter'},
-    {src: heroIcons.birdman, alt: 'birdman'},
-    {src: villainIcons.alien1, alt: 'alien1'},
-    {src: heroIcons.flash, alt: 'flash'},
-    {src: villainIcons.flyman, alt: 'm'},
-    {src: heroIcons.hulk, alt: 'hulk'},
-    {src: villainIcons.guason, alt: 'guason'},
-    {src: heroIcons.leono, alt: 'leono'},
-    {src: villainIcons.hannibal, alt: 'hannibal'},
-    {src: heroIcons.robocop, alt: 'robocop'},
-    {src: villainIcons.alien2, alt: 'alien2'},
+  }, [])
 
-    {src: heroIcons.thor, alt: 'thor'},
-    {src: villainIcons.prisoner, alt: 'prisoner'},
-    {src: heroIcons.superman, alt: 'superman'},
-    {src: villainIcons.psycho1, alt: 'psycho1'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.psycho2, alt: 'psycho2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.supervillian, alt: 'supervillian'},
-    {src: heroIcons.superhero6, alt: 'batman'},
-    {src: villainIcons.mib2, alt: 'mib2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.mib3, alt: 'mib3'},
-
-
-    {src: heroIcons.flash, alt: 'flash'},
-    {src: villainIcons.flyman, alt: 'm'},
-    {src: heroIcons.hulk, alt: 'hulk'},
-    {src: villainIcons.guason, alt: 'guason'},
-    {src: heroIcons.leono, alt: 'leono'},
-    {src: villainIcons.hannibal, alt: 'hannibal'},
-    {src: heroIcons.robocop, alt: 'robocop'},
-    {src: villainIcons.alien2, alt: 'alien2'},
-
-    {src: heroIcons.thor, alt: 'thor'},
-    {src: villainIcons.prisoner, alt: 'prisoner'},
-    {src: heroIcons.superman, alt: 'superman'},
-    {src: villainIcons.psycho1, alt: 'psycho1'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.psycho2, alt: 'psycho2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.supervillian, alt: 'supervillian'},
-    {src: heroIcons.superhero6, alt: 'batman'},
-    {src: villainIcons.mib2, alt: 'mib2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.mib3, alt: 'mib3'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.walter, alt: 'walter'},
-    {src: heroIcons.birdman, alt: 'birdman'},
-    {src: villainIcons.alien1, alt: 'alien1'},
-
-    {src: heroIcons.leono, alt: 'leono'},
-    {src: villainIcons.hannibal, alt: 'hannibal'},
-    {src: heroIcons.robocop, alt: 'robocop'},
-    {src: villainIcons.alien2, alt: 'alien2'},
-
-    {src: heroIcons.thor, alt: 'thor'},
-    {src: villainIcons.prisoner, alt: 'prisoner'},
-    {src: heroIcons.superman, alt: 'superman'},
-    {src: villainIcons.psycho1, alt: 'psycho1'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.psycho2, alt: 'psycho2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.supervillian, alt: 'supervillian'},
-    {src: heroIcons.superhero6, alt: 'batman'},
-    {src: villainIcons.mib2, alt: 'mib2'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.mib3, alt: 'mib3'},
-    {src: heroIcons.batman, alt: 'batman'},
-    {src: villainIcons.walter, alt: 'walter'},
-    {src: heroIcons.birdman, alt: 'birdman'},
-    {src: villainIcons.alien1, alt: 'alien1'},
-    {src: heroIcons.flash, alt: 'flash'},
-    {src: villainIcons.flyman, alt: 'm'},
-    {src: heroIcons.hulk, alt: 'hulk'},
-    {src: villainIcons.guason, alt: 'guason'},
-  ]
 
   return (
     <div className='flex h-screen'>
       <div className='absolute flex flex-wrap w-full h-screen bg-stone-100 z-0 p-10'>
 
-        {icons.map( (icon, ndx)=> {
+        { icons.map((key, ndx) => {
           const highlight:boolean = highlighted.indexOf(ndx) !== -1
-          return <SplashIcon src={icon.src} alt={icon.alt} highlight={highlight} key={ndx} />
-        })}
-
+          const item = gameConfig.collections[key.collection][key.item]
+          return <SplashIcon src={item.icon} alt={item.name} highlight={highlight} key={ndx} />
+        }) }
 
 
 
