@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import LivesDisplay from '../../components/lives-display';
 
 import gameConfig from '../../config';
 import createLevel from '../../engine/create-level';
@@ -73,10 +74,12 @@ export function Scenario({levelId, backHandler}: {levelId: number, backHandler: 
     <div className='flex h-[calc(100vh-50px)]'>
       <div className='flex-grow flex h-full justify-center p-10'>
 
-          {board && <Board board={board} removeItem={(col:number, row:number, itemKey:string) => onRemoveItem(board, col, row, itemKey) }/> }
+          {(board && solution) && <Board board={board} solution={solution} removeItem={(col:number, row:number, itemKey:string) => onRemoveItem(board, col, row, itemKey) }/> }
 
       </div>
-      <div className='w-[300px] bg-stone-400'></div>
+      <div className='w-[300px] bg-stone-400'>
+      {<LivesDisplay />}
+      </div>
     </div>
 
   </div>

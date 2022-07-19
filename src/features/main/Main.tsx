@@ -18,6 +18,7 @@ export function Main({backHandler}: { backHandler: React.MouseEventHandler}) {
       <header className='bg-amber-500 flex justify-between items-center py-2 px-4'>
         <h1 className='text-white text-2xl'>Hero Detective</h1>
         <div>
+
           { viewKey !== 'map' ? <MapButton onClick={() => setViewKey('map')} /> : null }
           <FullScreenButton />
           <ExitButton onClick={backHandler} />

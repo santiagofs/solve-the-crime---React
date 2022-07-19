@@ -1,8 +1,9 @@
-import type { Board as BoardType } from "../../engine/types"
+import type { Board as BoardType, CoordMap } from "../../engine/types"
 import Cell from './Cell'
 
 type BoardProps = {
   board: BoardType,
+  solution: CoordMap,
   removeItem: (col:number, row:number, itemKey:string) => void
 }
 
@@ -12,13 +13,19 @@ const cellClassnames:{[ndx:string]:string} = {
     'h2': 'h-1/2', 'h3': 'h-1/3', 'h4': 'h-1/4'
 }
 
-const Board = ({board, removeItem}:BoardProps) => {
+const Board = ({board, solution, removeItem}:BoardProps) => {
   const rows = (board.length)
   const cols = rows > 0 ? board[0].length : 0
   let classnames:string[] = [cellClassnames['w'+cols],  cellClassnames['h'+rows]]
   classnames.push('border-collapse border border-slate-400')
-  console.log('board on board ', board)
+
   const onRemoveItem = (col: number, row: number, itemKey: string) => {
+    const itemSolution = solution[itemKey][0]
+    if(itemSolution.col === col && itemSolution.row === row) {
+      alert('mistake!')
+      return false
+    }
+
     removeItem(col, row, itemKey)
   }
 
