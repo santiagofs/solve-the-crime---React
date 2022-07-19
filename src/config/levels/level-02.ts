@@ -1,4 +1,4 @@
-import type { LevelConfig } from '../../classes'
+import { LevelConfig } from "../../engine/types"
 
 export default {
   number: 2,

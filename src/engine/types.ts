@@ -37,6 +37,15 @@ export type Level = {
   rules:Rule[]
   solution:CoordMap
 }
+export type LevelConfig = {
+  number: number,
+  collections: string[],
+  itemsPerCollection: number,
+  boardSize: {
+    cols:number,
+    rows: number
+  }
+}
 
 export type Item = {
   icon: string

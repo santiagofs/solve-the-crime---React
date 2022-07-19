@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Game } from '../../classes';
 
 import { Map } from '../map/Map';
 import { Scenario } from '../scenario/Scenario';
@@ -10,9 +9,9 @@ import { MapButton } from '../../components/map-button'
 
 type ViewKey = 'map' | number
 
-export function Main({game, backHandler}: {game: Game, backHandler: React.MouseEventHandler}) {
+export function Main({backHandler}: { backHandler: React.MouseEventHandler}) {
   const [viewKey, setViewKey] = useState<ViewKey>('map')
-
+  console.log('the main')
 
   return (
     <div>
@@ -24,8 +23,8 @@ export function Main({game, backHandler}: {game: Game, backHandler: React.MouseE
           <ExitButton onClick={backHandler} />
         </div>
       </header>
-
-      { viewKey === 'map' ? <Map game={game} levelHandler={(ndx: number) => setViewKey(ndx)} /> : <Scenario levelId={viewKey} game={game} backHandler={() =>  setViewKey('map')} /> }
+      { viewKey === 'map' ? <Map levelHandler={(ndx: number) => setViewKey(ndx)} /> : <Scenario levelId={viewKey}  backHandler={() =>  setViewKey('map')} />}
+      {/* { viewKey === 'map' ? <Map levelHandler={(ndx: number) => setViewKey(ndx)} /> : <Scenario levelId={viewKey}  backHandler={() =>  setViewKey('map')} /> } */}
 
       {/* {JSON.stringify(game)} */}
     </div>
