@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import gameConfig from '../../config';
 import createLevel from '../../engine/create-level';
-import { Level } from '../../engine/types';
+import removeItemFromBoard from '../../engine/remove-item-from-board';
+import { Board as BoardType, CoordMap, Level, Rule } from '../../engine/types';
 import Board from './Board';
 // import { Board } from '../board/Board';
 // import Rules from '../rules/Rules';
@@ -10,15 +11,19 @@ import Board from './Board';
 export function Scenario({levelId, backHandler}: {levelId: number, backHandler: () => void}) {
 
   const [level, setLevel] = useState<Level|null>(null)
+  const [board, setBoard] = useState<BoardType|null>(null)
+  const [rules, setRules] = useState<Rule[]|null>(null)
+  const [solution, setSolution] = useState<CoordMap|null>(null)
   // const [grid, setGrid] = useState<Grid<string[]>|null>(null)
 
   console.log('render scenario')
   useEffect(() => {
-    console.log('test', levelId)
-    console.log(gameConfig.levels[levelId - 1])
     const level:Level = createLevel(gameConfig.levels[levelId - 1])
     setLevel(level)
-    // setGrid(level.grid)
+    setBoard(level.board)
+    setRules(level.rules)
+    setSolution(level.solution)
+
   }, [levelId])
 
   // function removeFromGrid(key:string) {
@@ -59,11 +64,16 @@ export function Scenario({levelId, backHandler}: {levelId: number, backHandler: 
   //     {/* {JSON.stringify(game)} */}
   //   </div>
   // );
+  const onRemoveItem = (board:BoardType, col:number, row:number, itemKey:string) => {
+    const newBoard = removeItemFromBoard(board, col, row, itemKey)
+    console.log(newBoard)
+    setBoard(newBoard)
+  }
   return <div>
     <div className='flex h-[calc(100vh-50px)]'>
       <div className='flex-grow flex h-full justify-center p-10'>
 
-          {level && <Board board={level.board} /> }
+          {board && <Board board={board} removeItem={(col:number, row:number, itemKey:string) => onRemoveItem(board, col, row, itemKey) }/> }
 
       </div>
       <div className='w-[300px] bg-stone-400'></div>

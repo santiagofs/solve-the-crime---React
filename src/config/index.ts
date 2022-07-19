@@ -41,10 +41,6 @@ const villainsCollection:ItemCollection = {
   'villains.walter': {name: 'walter', icon: villainIcons.walter},
 }
 
-const Level01 = {
-
-}
-
 const gameConfig:{
   collections:ItemCollections,
   collectionKeys: {[collectionName:string]:string[]},
