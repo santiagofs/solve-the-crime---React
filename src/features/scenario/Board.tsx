@@ -1,5 +1,8 @@
+import { useDispatch } from "react-redux"
 import type { Board as BoardType, CoordMap } from "../../engine/types"
+
 import Cell from './Cell'
+import { gameActions } from '../../store/game-slice'
 
 type BoardProps = {
   board: BoardType,
@@ -14,6 +17,9 @@ const cellClassnames:{[ndx:string]:string} = {
 }
 
 const Board = ({board, solution, removeItem}:BoardProps) => {
+  const dispatch = useDispatch()
+
+
   const rows = (board.length)
   const cols = rows > 0 ? board[0].length : 0
   let classnames:string[] = [cellClassnames['w'+cols],  cellClassnames['h'+rows]]
@@ -23,6 +29,7 @@ const Board = ({board, solution, removeItem}:BoardProps) => {
     const itemSolution = solution[itemKey][0]
     if(itemSolution.col === col && itemSolution.row === row) {
       alert('mistake!')
+      dispatch(gameActions.addError())
       return false
     }
 

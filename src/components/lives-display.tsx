@@ -4,7 +4,7 @@ export function LivesDisplay({totalLives = 3, errors = 0}:{totalLives?:number, e
 
   for(let i = 0; i < totalLives; i++) {
     const color = i < errors ? 'text-stone-200' : 'text-orange-700'
-    hearts.push(<BsFillHeartFill width={'50px'} className={'w-6 h-6 mx-2 ' + color}/>)
+    hearts.push(<BsFillHeartFill width={'50px'} className={'w-6 h-6 mx-2 ' + color} key={i}/>)
   }
   return <div className='flex p-2 bg-white mr-4 w-full justify-center'>
     {hearts}

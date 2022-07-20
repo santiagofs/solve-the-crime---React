@@ -14,9 +14,14 @@ const initialState:GameState = {
 const gameSlice = createSlice({
   name: 'game',
   initialState,
-  reducers: {}
+  reducers: {
+    addError(state) {
+      console.log('adding error')
+      state.errors ++
+    }
+  }
 })
 
-
+export const gameActions = gameSlice.actions
 
 export default gameSlice

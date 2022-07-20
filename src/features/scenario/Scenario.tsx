@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import LivesDisplay from '../../components/lives-display';
 
 import gameConfig from '../../config';
 import createLevel from '../../engine/create-level';
 import removeItemFromBoard from '../../engine/remove-item-from-board';
 import { Board as BoardType, CoordMap, Level, Rule } from '../../engine/types';
+import { RootState } from '../../store';
 import Board from './Board';
 // import { Board } from '../board/Board';
 // import Rules from '../rules/Rules';
 
 export function Scenario({levelId, backHandler}: {levelId: number, backHandler: () => void}) {
+  const mistakes = useSelector((state:RootState) => state.game.errors)
 
   const [level, setLevel] = useState<Level|null>(null)
   const [board, setBoard] = useState<BoardType|null>(null)
   const [rules, setRules] = useState<Rule[]|null>(null)
   const [solution, setSolution] = useState<CoordMap|null>(null)
+
   // const [grid, setGrid] = useState<Grid<string[]>|null>(null)
 
   console.log('render scenario')
@@ -78,7 +82,7 @@ export function Scenario({levelId, backHandler}: {levelId: number, backHandler: 
 
       </div>
       <div className='w-[300px] bg-stone-400'>
-      {<LivesDisplay />}
+      {<LivesDisplay errors={mistakes}/>}
       </div>
     </div>
 
