@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import gameConfig from '../../config'
+import ItemIcon from '../../components/item-icon'
 
 type CellProps = {
   itemKeys: string[],
@@ -23,10 +23,8 @@ const Cell = ({itemKeys, removeItem}:CellProps) => {
   const classNames = wClassname + ' ' + hClassname + 'aspect-square p-5'
   return <div className="flex flex-wrap">
     {itemKeys.map( itemKey => {
-      const collectionKey = itemKey.split('.')[0]
-      const item = gameConfig.collections[collectionKey][itemKey]
       return <button className={classNames} onClick={() => removeItem(itemKey)} key={itemKey}>
-        <img src={item.icon} alt={item.name} />
+        <ItemIcon itemKey={itemKey} />
       </button>
     })}
   </div>

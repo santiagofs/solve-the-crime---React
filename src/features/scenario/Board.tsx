@@ -6,8 +6,7 @@ import { gameActions } from '../../store/game-slice'
 
 type BoardProps = {
   board: BoardType,
-  solution: CoordMap,
-  removeItem: (col:number, row:number, itemKey:string) => void
+  solution: CoordMap
 }
 
 // we need to hardcode the board classNames
@@ -16,7 +15,7 @@ const cellClassnames:{[ndx:string]:string} = {
     'h2': 'h-1/2', 'h3': 'h-1/3', 'h4': 'h-1/4'
 }
 
-const Board = ({board, solution, removeItem}:BoardProps) => {
+const Board = ({board, solution}:BoardProps) => {
   const dispatch = useDispatch()
 
 
@@ -28,12 +27,12 @@ const Board = ({board, solution, removeItem}:BoardProps) => {
   const onRemoveItem = (col: number, row: number, itemKey: string) => {
     const itemSolution = solution[itemKey][0]
     if(itemSolution.col === col && itemSolution.row === row) {
-      alert('mistake!')
+
       dispatch(gameActions.addError())
       return false
     }
 
-    removeItem(col, row, itemKey)
+    dispatch(gameActions.removeFromBoard({col, row, itemKey}))
   }
 
   return (
