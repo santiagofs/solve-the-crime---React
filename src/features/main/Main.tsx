@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import { Map } from '../map/Map';
 import { Scenario } from '../scenario/Scenario';
@@ -6,11 +6,13 @@ import { Scenario } from '../scenario/Scenario';
 import { FullScreenButton } from '../../components/full-screen-button'
 import { ExitButton } from '../../components/exit-button'
 import { MapButton } from '../../components/map-button'
+import { useDispatch, useSelector } from 'react-redux';
+import { viewsActions } from '../../store/views-slice'
+import { RootState } from '../../store';
 
-type ViewKey = 'map' | number
-
-export function Main({backHandler}: { backHandler: React.MouseEventHandler}) {
-  const [viewKey, setViewKey] = useState<ViewKey>('map')
+export function Main() {
+  const dispatch = useDispatch()
+  const mainView = useSelector((state:RootState) => state.views.main)
   console.log('the main')
 
   return (
@@ -18,13 +20,12 @@ export function Main({backHandler}: { backHandler: React.MouseEventHandler}) {
       <header className='bg-amber-500 flex justify-between items-center py-2 px-4'>
         <h1 className='text-white text-2xl'>Hero Detective</h1>
         <div>
-
-          { viewKey !== 'map' ? <MapButton onClick={() => setViewKey('map')} /> : null }
+          { mainView !== 'map' ? <MapButton onClick={() => dispatch(viewsActions.setMainView('map'))} /> : null }
           <FullScreenButton />
-          <ExitButton onClick={backHandler} />
+          <ExitButton onClick={() => dispatch(viewsActions.setAppView('splash'))} />
         </div>
       </header>
-      { viewKey === 'map' ? <Map levelHandler={(ndx: number) => setViewKey(ndx)} /> : <Scenario levelId={viewKey}  backHandler={() =>  setViewKey('map')} />}
+      { mainView === 'map' ? <Map /> : <Scenario />}
       {/* { viewKey === 'map' ? <Map levelHandler={(ndx: number) => setViewKey(ndx)} /> : <Scenario levelId={viewKey}  backHandler={() =>  setViewKey('map')} /> } */}
 
       {/* {JSON.stringify(game)} */}

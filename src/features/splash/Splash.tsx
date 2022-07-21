@@ -6,7 +6,6 @@ import gameConfig from '../../config';
 import SplashIcon from './SplashIcon'
 type splashProps = {
   continueHandler: () => void,
-  isReady: boolean
 }
 type IconKey = {
   collection:string, item:string
@@ -30,7 +29,7 @@ for(let i=0; i < 36; i++) {
 }
 
 
-export function Splash({continueHandler, isReady}: splashProps) {
+export function Splash({continueHandler}: splashProps) {
   const [highlighted, setHighlighted] = useState([1, 23, 33, 38, 57, 66]) as [number[], Function]
   const [icons, setIcons] = useState<IconKey[]>([])
 
@@ -82,7 +81,7 @@ export function Splash({continueHandler, isReady}: splashProps) {
       </div>
       <div className='m-auto z-10 text-center'>
         <h1 className='text-white text-[120px] leading-none bg-opacity-90 bg-amber-500 px-40 py-10 rounded-lg shadow-md'>Hero Detective</h1>
-        {isReady && <button className="text-2xl mt-10 bg-orange-500 text-white font-bold rounded-lg px-10 py-2 shadow-md" onClick={() => continueHandler()}>start</button>}
+        <button className="text-2xl mt-10 bg-orange-500 text-white font-bold rounded-lg px-10 py-2 shadow-md" onClick={() => continueHandler()}>start</button>
       </div>
 
     </div>

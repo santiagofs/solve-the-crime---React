@@ -9,6 +9,8 @@ import boardAsCoordinatesMap from "../engine/board-as-coordinates-map";
 export type GameState = {
   levels: {id:number, solved:boolean, elapsedTime: number}[]
   level:Level|null, mistakes:number, startTime:number, endTime:number, elapsedTime:number,
+  currentLevel: number,
+  nextLevel: number,
   showMistakeDialog:boolean,
   status: 'progress' | 'win' | 'loose'
 }
@@ -16,6 +18,8 @@ export type GameState = {
 const initialState:GameState = {
   levels: gameConfig.levels.map((level, ndx) => ({id: ndx + 1, solved:false, elapsedTime: 0})),
   level: null, mistakes: 0, startTime: 0, endTime: 0, elapsedTime: 0,
+  currentLevel: -1,
+  nextLevel: 1,
   showMistakeDialog: false,
   status: 'progress'
 }
@@ -28,8 +32,9 @@ const gameSlice = createSlice({
       state.mistakes ++
       if(state.mistakes === 3) state.status = 'loose'
     },
-    createLevel(state, action) {
-      const config = gameConfig.levels.filter(level => level.number === action.payload)[0]
+    createLevel(state, {payload}: {payload:number}) {
+      state.currentLevel = payload
+      const config = gameConfig.levels.find(level => level.number === payload)!
       state.level = createLevel(config)
       state.mistakes = 0
       state.status = 'progress'
@@ -39,7 +44,13 @@ const gameSlice = createSlice({
 
       if(!state.level?.board) return
       state.level.board = removeItemFromBoard(state.level.board, col, row, itemKey)
-      if(isEqual(boardAsCoordinatesMap(state.level.board), state.level.solution)) state.status = 'win'
+
+      if(isEqual(boardAsCoordinatesMap(state.level.board), state.level.solution)) {
+        state.status = 'win'
+        const level = state.levels.find(l => l.id = state.currentLevel)!
+        level.solved = true
+        state.nextLevel = state.levels.find(l => !l.solved)!.id
+      }
 
       // isEqual(boardAsCoordinatesMap(tmp), solution)
     },
