@@ -35,7 +35,7 @@ const gameSlice = createSlice({
     createLevel(state, {payload}: {payload:number}) {
       state.currentLevel = payload
       const config = gameConfig.levels.find(level => level.number === payload)!
-      state.level = createLevel(config)
+      state.level = createLevel(config, gameConfig.collectionKeys)
       state.mistakes = 0
       state.status = 'progress'
     },
