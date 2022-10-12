@@ -1,26 +1,38 @@
-import { IconType } from 'react-icons'
-import { BsArrowDownRight, BsArrowUpRight, BsArrowRight, BsArrowDown, BsArrowsAngleContract } from 'react-icons/bs'
+import { IconType } from "react-icons";
+import {
+  BsArrowDownRight,
+  BsArrowUpRight,
+  BsArrowRight,
+  BsArrowDown,
+  BsArrowUp,
+  BsArrowsAngleContract,
+} from "react-icons/bs";
 
-import { Vector } from "../engine/types"
+import { Vector } from "../engine/types";
 
+type RuleIconProps = Vector;
 
-type RuleIconProps = Vector
-
-const RuleArrow = function({cols, rows}:RuleIconProps) {
-  let Icon:IconType
-  if(cols === 0 && rows === 0) {
-    Icon = BsArrowsAngleContract
-  } else if(cols === 0) {
-    Icon = BsArrowDown
-  } else if(rows === 0) {
-    Icon = BsArrowRight
-  } else if(rows > 0) {
-    Icon = BsArrowDownRight
+const RuleArrow = function ({ cols, rows }: RuleIconProps) {
+  let Icon: IconType;
+  if (cols === 0) {
+    if (rows === 0) {
+      Icon = BsArrowsAngleContract;
+    } else if (rows > 0) {
+      Icon = BsArrowDown;
+    } else {
+      Icon = BsArrowUp;
+    }
   } else {
-    Icon = BsArrowUpRight
+    if (rows === 0) {
+      Icon = BsArrowRight;
+    } else if (rows > 0) {
+      Icon = BsArrowDownRight;
+    } else {
+      Icon = BsArrowUpRight;
+    }
   }
 
-  return <Icon className='w-full h-full'/>
-}
+  return <Icon className="w-full h-full" />;
+};
 
-export default RuleArrow
+export default RuleArrow;
