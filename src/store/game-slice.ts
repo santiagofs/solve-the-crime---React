@@ -1,5 +1,5 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { Level } from "../engine/types";
+import { createSlice, createSelector, current } from "@reduxjs/toolkit";
+import { Level, Rule } from "../engine/types";
 import gameConfig from "../config";
 import createLevel from "../engine/create-level";
 import removeItemFromBoard from "../engine/remove-item-from-board";
@@ -18,6 +18,7 @@ export type GameState = {
   nextLevel: number;
   showMistakeDialog: boolean;
   status: "progress" | "win" | "loose";
+  selectedRule: Rule | null;
 };
 
 const initialState: GameState = {
@@ -35,6 +36,20 @@ const initialState: GameState = {
   nextLevel: 1,
   showMistakeDialog: false,
   status: "progress",
+  selectedRule: null,
+};
+
+const checkLevelStatus = (state: GameState) => {
+  console.log(state.levels, JSON.stringify(state.levels));
+  if (
+    isEqual(boardAsCoordinatesMap(state.level!.board), state.level!.solution)
+  ) {
+    state.status = "win";
+    const level = state.levels.find((l) => l.id === state.currentLevel)!;
+    level.solved = true;
+    const nextLevel = state.levels.find((l) => !l.solved);
+    state.nextLevel = nextLevel ? nextLevel.id : 0;
+  }
 };
 
 const gameSlice = createSlice({
@@ -46,6 +61,7 @@ const gameSlice = createSlice({
       if (state.mistakes === 3) state.status = "loose";
     },
     createLevel(state, { payload }: { payload: number }) {
+      state.selectedRule = null;
       state.currentLevel = payload;
       const config = gameConfig.levels.find(
         (level) => level.number === payload
@@ -64,19 +80,7 @@ const gameSlice = createSlice({
         row,
         itemKey
       );
-
-      if (
-        isEqual(boardAsCoordinatesMap(state.level.board), state.level.solution)
-      ) {
-        state.status = "win";
-        const level = state.levels.find((l) => (l.id = state.currentLevel))!;
-        level.solved = true;
-        const nextLevel = state.levels.find((l) => !l.solved)!.id;
-        console.log(nextLevel);
-        state.nextLevel = nextLevel;
-      }
-
-      // isEqual(boardAsCoordinatesMap(tmp), solution)
+      checkLevelStatus(state);
     },
     selectItem(state, action) {
       const { col, row, itemKey } = action.payload;
@@ -94,20 +98,17 @@ const gameSlice = createSlice({
           }
         }
       }
-      if (
-        isEqual(boardAsCoordinatesMap(state.level.board), state.level.solution)
-      ) {
-        state.status = "win";
-        const level = state.levels.find((l) => (l.id = state.currentLevel))!;
-        level.solved = true;
-        const nextLevel = state.levels.find((l) => !l.solved)!.id;
-        console.log(nextLevel);
-        state.nextLevel = nextLevel;
-      }
+      checkLevelStatus(state);
     },
     showMistakeDialog(state, action) {
       if (state.mistakes === 3) return; // already loose
       state.showMistakeDialog = action.payload;
+    },
+    selectRule(state, action) {
+      state.selectedRule =
+        state.selectedRule && current(state.selectedRule) === action.payload
+          ? null
+          : action.payload;
     },
   },
 });
@@ -133,6 +134,16 @@ export const getActiveRules = createSelector(
       console.log(solved);
       return !solved;
     });
+  }
+);
+export const getItemsStatus: any = createSelector(
+  (state: RootState) => getBoardAsCoordinatesMap(state),
+  (coordMap) => {
+    if (!coordMap) return {};
+    return Object.keys(coordMap).reduce((reducer, key) => {
+      reducer[key] = coordMap[key].length === 1;
+      return reducer;
+    }, {} as Record<string, boolean>);
   }
 );
 export const gameActions = gameSlice.actions;

@@ -6,7 +6,6 @@ const Rules = () => {
   const rules = useSelector(getActiveRules);
 
   const enabledRules = rules ? rules : [];
-  console.log(rules);
   return (
     <div className="p-4 text-center">
       {enabledRules.map((rule, i) => (

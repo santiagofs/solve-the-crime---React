@@ -10,13 +10,19 @@ type BoardProps = {
 };
 
 // we need to hardcode the board classNames
-const cellClassnames: { [ndx: string]: string } = {
-  w2: "w-1/2",
-  w3: "w-1/3",
-  "4": "w-1/4",
-  h2: "h-1/2",
-  h3: "h-1/3",
-  h4: "h-1/4",
+// const cellClassnames: { [ndx: string]: string } = {
+//   w2: "w-1/2",
+//   w3: "w-1/3",
+//   "4": "w-1/4",
+//   h2: "h-1/2",
+//   h3: "h-1/3",
+//   h4: "h-1/4",
+// };
+const gridClasnames: { [ndx: string]: string } = {
+  w1: "grid-cols-1",
+  w2: "grid-cols-2",
+  w3: "grid-cols-3",
+  w4: "grid-cols-4",
 };
 
 const Board = ({ board, solution }: BoardProps) => {
@@ -25,11 +31,13 @@ const Board = ({ board, solution }: BoardProps) => {
 
   const rows = board.length;
   const cols = rows > 0 ? board[0].length : 0;
-  let classnames: string[] = [
-    cellClassnames["w" + cols],
-    cellClassnames["h" + rows],
+
+  let boardClassnames: string[] = [
+    "grid border-collapse border border-slate-400",
+    gridClasnames["w" + cols],
   ];
-  classnames.push("border-collapse border border-slate-400");
+
+  let cellClassnames = [" border-2 border-slate-400 aspect-square"];
 
   const handleItemClick = (
     col: number,
@@ -51,25 +59,30 @@ const Board = ({ board, solution }: BoardProps) => {
   };
 
   return (
-    <div className="flex flex-wrap aspect-square">
-      {board.map((cols, rowIndex) => {
-        return cols.map((itemKeys, colIndex) => {
-          const bgClassname =
-            (colIndex + rowIndex) % 2 === 1 ? " bg-stone-300" : "";
-          return (
-            <div className={classnames.join(" ") + bgClassname} key={colIndex}>
-              <Cell
-                itemKeys={itemKeys}
-                handleClick={(itemKey, remove = false) =>
-                  handleItemClick(colIndex, rowIndex, itemKey, remove)
-                }
-              />
-            </div>
-          );
-        });
-      })}
-      <pre>{JSON.stringify(solution, null, 2)}</pre>
-      <pre>{JSON.stringify(coordMap, null, 2)}</pre>
+    <div className="w-full max-w-[1200px]">
+      <div className={boardClassnames.join(" ")}>
+        {board.map((cols, rowIndex) => {
+          return cols.map((itemKeys, colIndex) => {
+            const bgClassname =
+              (colIndex + rowIndex) % 2 === 1
+                ? " bg-stone-100"
+                : " bg-stone-100";
+            return (
+              <div
+                className={cellClassnames.join(" ") + bgClassname}
+                key={colIndex}
+              >
+                <Cell
+                  itemKeys={itemKeys}
+                  handleClick={(itemKey, remove = false) =>
+                    handleItemClick(colIndex, rowIndex, itemKey, remove)
+                  }
+                />
+              </div>
+            );
+          });
+        })}
+      </div>
     </div>
   );
 };

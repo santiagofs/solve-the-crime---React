@@ -1,37 +1,36 @@
-import loadIcon from "./load-icon-async"
-import { ItemCollection } from "./types"
+import loadIcon from "./load-icon-async";
+import { ItemCollection } from "./types";
 
-
-
-const loadItemCollectionAsync = async (collectionName:string):Promise<ItemCollection> => {
-  const path = '../config/collections/' + collectionName + '.ts'
+const loadItemCollectionAsync = async (
+  collectionName: string
+): Promise<ItemCollection> => {
+  const path = "../config/collections/" + collectionName + ".ts";
   try {
-    const config:[string, string][] = await import(path).then(
+    const config: [string, string][] = await import(path).then(
       (module) => module.default
-    )
-    const ret:ItemCollection = {}
-    for(const itemConfig of config) {
-      const [name, iconPath] = itemConfig
-      const key = `${collectionName}.${name}`
-      const icon = await loadIcon(iconPath)
+    );
+    const ret: ItemCollection = {};
+    for (const itemConfig of config) {
+      const [name, iconPath] = itemConfig;
+      const key = `${collectionName}.${name}`;
+      const icon = await loadIcon(iconPath);
       ret[key] = {
         name,
-        icon
-      }
+        icon,
+      };
     }
-    return ret
-
-  } catch(e:unknown) {
-    if(typeof e === 'string') {
-      console.warn(e)
-    } else if(e instanceof Error) {
-      console.log(e.message)
+    return ret;
+  } catch (e: unknown) {
+    if (typeof e === "string") {
+      console.warn(e);
+    } else if (e instanceof Error) {
+      console.error(e.message);
     } else {
-      console.log(e)
+      console.error(e);
     }
 
-    throw(new Error("Couldn't load collection: " + path))
+    throw new Error("Couldn't load collection: " + path);
   }
-}
+};
 
-export default loadItemCollectionAsync
+export default loadItemCollectionAsync;

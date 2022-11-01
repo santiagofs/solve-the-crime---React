@@ -27,8 +27,6 @@ export function Scenario() {
   );
   const gameStatus = useSelector((state: RootState) => state.game.status);
 
-  console.log("the scenario");
-
   useEffect(() => {
     if (mistakes === 0 || mistakes > 2) return;
     let timeout: number;
